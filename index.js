@@ -4,6 +4,9 @@ const app = express()
 const {config} = require('./config')
 const { moviesApi } = require('./routes/movies')
 
+// Middleware body parser
+app.use(express.json())
+
 moviesApi(app)
 
 app.get('/leapyear/:year', (req, res) => {
