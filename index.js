@@ -22,6 +22,16 @@ app.use(cors(corsOptions));
 
 // Routes
 moviesApi(app);
+
+app.get('/leapyear/:year', (req, res) => {
+  leapYear(req, res);
+});
+app.get('/', (req, res) => {
+  res.status(200);
+  res.set('Content-Type', 'text/html');
+  res.send(Buffer.from('<a href="/api/movies">Go to movies api</a>'));
+});
+
 // Catch 404
 app.use(notFoundHandler);
 
@@ -29,10 +39,6 @@ app.use(notFoundHandler);
 app.use(logErrors);
 app.use(wrapErrors);
 app.use(errorHandler);
-
-app.get('/leapyear/:year', (req, res) => {
-  leapYear(req, res);
-});
 
 app.listen(config.port, () => {
   debug(`Listening http://localhost${config.port}`);
