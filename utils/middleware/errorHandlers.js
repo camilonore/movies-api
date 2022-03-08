@@ -1,5 +1,6 @@
 const { config } = require('../../config');
 const boom = require('@hapi/boom');
+const debug = require('debug')('app:error');
 
 /*
   Por defecto express tiene un manejador de errores que funciona de manera sincrona,
@@ -16,7 +17,7 @@ function withErrorStack(err, stack) {
 }
 
 function logErrors(err, req, res, next) {
-  console.log(err);
+  debug(err);
   next(err);
 }
 

@@ -1,8 +1,11 @@
 const express = require('express');
+const debug = require('debug')('app:server');
 const leapYear = require('./challenges/leap-year');
 const app = express();
 const { config } = require('./config');
 const moviesApi = require('./routes/movies');
+const helmet = require('helmet');
+const cors = require('cors');
 const {
   logErrors,
   errorHandler,
@@ -12,13 +15,17 @@ const notFoundHandler = require('./utils/middleware/notFoundHandler');
 
 // Middleware body parser
 app.use(express.json());
+// Middleware for security
+app.use(helmet());
+const corsOptions = { origin: 'http://localhost:3000' };
+app.use(cors(corsOptions));
 
 // Routes
 moviesApi(app);
 // Catch 404
 app.use(notFoundHandler);
 
-// Errors Middleware
+// Errors Middlewares
 app.use(logErrors);
 app.use(wrapErrors);
 app.use(errorHandler);
@@ -28,5 +35,5 @@ app.get('/leapyear/:year', (req, res) => {
 });
 
 app.listen(config.port, () => {
-  console.log(`Listening http://localhost${config.port}`);
+  debug(`Listening http://localhost${config.port}`);
 });
